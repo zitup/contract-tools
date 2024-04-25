@@ -1,6 +1,6 @@
 'use client';
 import { ModeToggle } from '@/components/ModeToggle';
-import DecodeFunctionData from '@/components/tool/DecodeFunctionData';
+import DecodeFunctionData from '@/components/tools/DecodeFunctionData';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function Home() {

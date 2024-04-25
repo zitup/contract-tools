@@ -41,17 +41,17 @@ const DecodeFunctionData = () => {
 
   return (
     <Card className="flex flex-col p-4">
-      <Label htmlFor="function-data">Function Data</Label>
+      <Label htmlFor="function-data">Function Input Data</Label>
       <Textarea
-        className="min-h-[200px]"
+        className="min-h-[200px] mt-2"
         id="function-data"
         placeholder="0x"
         value={functionData}
         onChange={(e) => setFunctionData(e.target.value)}
       />
-      <div className="mt-2">
+      <div className="mt-4">
         <Label htmlFor="abi">ABI</Label>
-        <Textarea className="min-h-[100px]" id="abi" placeholder="[...]" value={abi} onChange={(e) => setAbi(e.target.value)} />
+        <Textarea className="min-h-[100px] mt-2" id="abi" placeholder="[...]" value={abi} onChange={(e) => setAbi(e.target.value)} />
         <p className="text-sm text-muted-foreground">If you don&apos;t have an ABI, we will try to fetch it from 4bytes for you.</p>
       </div>
       <Button className="mt-2 self-end" onClick={onClick}>

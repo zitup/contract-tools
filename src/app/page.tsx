@@ -1,6 +1,7 @@
 'use client';
 import { ModeToggle } from '@/components/ModeToggle';
 import DecodeFunctionData from '@/components/tools/DecodeFunctionData';
+import OperateUnverifiedContract from '@/components/tools/OperateUnverifiedContract';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function Home() {
@@ -12,12 +13,14 @@ export default function Home() {
       <Tabs defaultValue="decodeFunctionData" className="w-[80%]">
         <TabsList>
           <TabsTrigger value="decodeFunctionData">Decode Function Data</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
+          <TabsTrigger value="operateUnverifiedContract">Operate Unverified Contract</TabsTrigger>
         </TabsList>
         <TabsContent value="decodeFunctionData">
           <DecodeFunctionData />
         </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
+        <TabsContent value="operateUnverifiedContract">
+          <OperateUnverifiedContract />
+        </TabsContent>
       </Tabs>
     </main>
   );

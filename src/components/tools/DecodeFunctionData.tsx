@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import JSON5 from 'json5';
 import { Button } from '../ui/button';
 import { Card, CardTitle } from '../ui/card';
 import { Label } from '../ui/label';
@@ -25,12 +26,12 @@ const DecodeFunctionData = () => {
     }
     let abiParsed;
     try {
-      abiParsed = abi && JSON.parse(abi);
+      abiParsed = abi && JSON5.parse(abi);
     } catch {
       setError('ABI must be a valid JSON array');
       return;
     }
-    if (abi && !Array.isArray(JSON.parse(abi))) {
+    if (abi && !Array.isArray(JSON5.parse(abi))) {
       setError('ABI must be a valid JSON array');
       return;
     }

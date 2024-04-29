@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import * as chains from 'viem/chains';
+import JSON5 from 'json5';
 import { Card, CardTitle } from '../ui/card';
 import { SelectScrollable } from '../SelectScrollable';
 import { createPublicClient, http, isAddress } from 'viem';
@@ -18,7 +19,7 @@ const OperateUnverifiedContract = () => {
   const [args, setArgs] = useState('');
   const [abi, setAbi] = useState('');
   const [error, setError] = useState('');
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState<any>(null);
 
   const onValueChange = (value: string) => {
     setChain(Number(value));
@@ -41,22 +42,26 @@ const OperateUnverifiedContract = () => {
     }
     let abiParsed;
     try {
-      abiParsed = abi && JSON.parse(abi);
+      abiParsed = abi && JSON5.parse(abi);
     } catch {
       setError('ABI must be a valid JSON array');
       return;
     }
-    if (abi && !Array.isArray(JSON.parse(abi))) {
+    if (abi && !Array.isArray(JSON5.parse(abi))) {
       setError('ABI must be a valid JSON array');
       return;
     }
     setError('');
-    const result = await publicClient.readContract({
-      address,
-      abi: abiParsed,
-      functionName,
-      args: args.split(','),
-    });
+    const result = await publicClient
+      .readContract({
+        address,
+        abi: abiParsed,
+        functionName,
+        args: args ? args.split(',') : [],
+      })
+      .catch((e) => {
+        setError(e.message);
+      });
     setResult(result);
   };
 
@@ -103,11 +108,11 @@ const OperateUnverifiedContract = () => {
       <Button className="mt-2 self-end" onClick={readFunction}>
         Decode
       </Button>
-      <p className="text-sm text-destructive mt-2">{error}</p>
+      <p className="text-sm text-destructive mt-2 break-all whitespace-break-spaces">{error}</p>
 
       <Card className="p-4 mt-2">
         <CardTitle>Results</CardTitle>
-        {result}
+        {result !== null && <div className="mt-2">{String(result)}</div>}
       </Card>
     </Card>
   );

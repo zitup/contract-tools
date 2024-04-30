@@ -1,4 +1,17 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const isProd = process.env.NODE_ENV === 'production';
 
-export default nextConfig;
+const nextConfig = {
+  distDir: 'build',
+  images: {
+    unoptimized: true
+  },
+}
+if(isProd) {
+  nextConfig.output = 'export';
+  nextConfig.compiler = {
+    removeConsole: true
+  }
+}
+
+export default nextConfig

@@ -62,7 +62,7 @@ const OperateUnverifiedContract = () => {
       .catch((e) => {
         setError(e.message);
       });
-    setResult(result);
+    result && setResult(result);
   };
 
   return (

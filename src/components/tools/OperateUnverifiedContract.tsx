@@ -8,6 +8,10 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
+import { validateInputFields } from '@/lib/validate';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccount, useClient, useWriteContract } from 'wagmi';
+import { writeContract } from 'viem/actions';
 
 const excludedChains = [31_337, 2_046_399_126, 4777];
 const Chains = Object.values(chains).filter((chain) => !chain.testnet && !excludedChains.includes(chain.id));
@@ -65,6 +69,38 @@ const OperateUnverifiedContract = () => {
     result && setResult(result);
   };
 
+  const { openConnectModal } = useConnectModal();
+  const { address: account } = useAccount();
+  const client = useClient();
+  // const { writeContract } = useWriteContract();
+  const writeFunction = async () => {
+    if (!account) {
+      openConnectModal?.();
+      return;
+    }
+    setResult(null);
+    const { error, abiParsed } = validateInputFields(address, abi);
+    if (error) {
+      setError(error);
+      return;
+    }
+    setError('');
+    writeContract(client!, {
+      address,
+      abi: abiParsed,
+      functionName,
+      account,
+      args: args ? args.split(',') : [],
+    })
+      .catch((e) => {
+        console.log(e);
+        setError(e.message);
+      })
+      .then((hash) => {
+        setResult(hash);
+      });
+  };
+
   return (
     <Card className="flex flex-col p-4">
       <SelectScrollable
@@ -105,9 +141,14 @@ const OperateUnverifiedContract = () => {
       </Label>
       <Textarea className="min-h-[100px] mt-2" id="abi" placeholder="[...]" value={abi} onChange={(e) => setAbi(e.target.value)} />
 
-      <Button className="mt-2 self-end" onClick={readFunction}>
-        Decode
-      </Button>
+      <div className="flex gap-2 mt-4">
+        <Button className="w-[96px]" onClick={readFunction}>
+          Read
+        </Button>
+        <Button className="w-[96px]" onClick={writeFunction}>
+          Write
+        </Button>
+      </div>
       <p className="text-sm text-destructive mt-2 break-all whitespace-break-spaces">{error}</p>
 
       <Card className="p-4 mt-2">

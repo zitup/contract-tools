@@ -1,5 +1,4 @@
-import { useState, useMemo } from 'react';
-import * as chains from 'viem/chains';
+import { useState, useMemo, useCallback } from 'react';
 import JSON5 from 'json5';
 import { Card, CardTitle } from '../ui/card';
 import { SelectScrollable } from '../SelectScrollable';
@@ -10,11 +9,9 @@ import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
 import { validateInputFields } from '@/lib/validate';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { useAccount, useClient, useWriteContract } from 'wagmi';
-import { writeContract } from 'viem/actions';
-
-const excludedChains = [31_337, 2_046_399_126, 4777];
-const Chains = Object.values(chains).filter((chain) => !chain.testnet && !excludedChains.includes(chain.id));
+import { useAccount, useWalletClient, useWriteContract } from 'wagmi';
+import { writeContract } from 'wagmi/actions';
+import { Chains, config } from '@/app/providers';
 
 const OperateUnverifiedContract = () => {
   const [chain, setChain] = useState<number>(1);
@@ -24,6 +21,7 @@ const OperateUnverifiedContract = () => {
   const [abi, setAbi] = useState('');
   const [error, setError] = useState('');
   const [result, setResult] = useState<any>(null);
+  const [writeResult, setWriteResult] = useState<any>(null);
 
   const onValueChange = (value: string) => {
     setChain(Number(value));
@@ -38,8 +36,13 @@ const OperateUnverifiedContract = () => {
     [chain]
   );
 
-  const readFunction = async () => {
+  const resetResults = useCallback(() => {
     setResult(null);
+    setWriteResult(null);
+  }, []);
+
+  const readFunction = async () => {
+    resetResults();
     if (isAddress(address) === false) {
       setError('Invalid address');
       return;
@@ -71,21 +74,21 @@ const OperateUnverifiedContract = () => {
 
   const { openConnectModal } = useConnectModal();
   const { address: account } = useAccount();
-  const client = useClient();
+  const { data: wallet } = useWalletClient();
   // const { writeContract } = useWriteContract();
   const writeFunction = async () => {
     if (!account) {
       openConnectModal?.();
       return;
     }
-    setResult(null);
+    resetResults();
     const { error, abiParsed } = validateInputFields(address, abi);
     if (error) {
       setError(error);
       return;
     }
     setError('');
-    writeContract(client!, {
+    writeContract(config!, {
       address,
       abi: abiParsed,
       functionName,
@@ -97,7 +100,7 @@ const OperateUnverifiedContract = () => {
         setError(e.message);
       })
       .then((hash) => {
-        setResult(hash);
+        setWriteResult(`${wallet?.chain?.blockExplorers?.default.url}/tx/${hash}`);
       });
   };
 
@@ -154,6 +157,11 @@ const OperateUnverifiedContract = () => {
       <Card className="p-4 mt-2">
         <CardTitle>Results</CardTitle>
         {result !== null && <div className="mt-2">{String(result)}</div>}
+        {writeResult !== null && (
+          <a href={writeResult} className="mt-2 underline block w-full overflow-hidden text-ellipsis" target="_blank">
+            {String(writeResult)}
+          </a>
+        )}
       </Card>
     </Card>
   );

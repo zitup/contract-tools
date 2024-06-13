@@ -12,7 +12,7 @@ import {
   uniswapWallet,
   zerionWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { mainnet, arbitrum, avalanche, bsc, optimism, polygon, manta, linea, base, blast, zkSync, metis, scroll } from 'wagmi/chains';
+import * as chains from 'viem/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider, createConfig } from 'wagmi';
 import { createClient, http } from 'viem';
@@ -39,9 +39,12 @@ const connectors = connectorsForWallets(
   { appName: 'Contract Tools', projectId: 'xx' }
 );
 
-const config = createConfig({
+const excludedChains = [31_337, 2_046_399_126, 4777, 28122024];
+export const Chains = Object.values(chains).filter((chain) => !chain.testnet && !excludedChains.includes(chain.id));
+
+export const config = createConfig({
   connectors,
-  chains: [mainnet, arbitrum, avalanche, bsc, optimism, polygon, manta, base, blast, zkSync, linea, metis, scroll],
+  chains: Chains as unknown as [chains.Chain, ...chains.Chain[]],
   client({ chain }) {
     return createClient({ chain, transport: http() });
   },

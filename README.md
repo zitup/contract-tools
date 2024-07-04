@@ -14,11 +14,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### With ABI
 
-- Decode Input
-- Retrieve Logs
-- Get Public Storage Variables for unverified contracts
+- [x] Decode Function Data
+- [ ] Encode Function Data
+- [ ] Retrieve Logs
+- [ ] Get Public Storage Variables for unverified contracts
+- [ ] Static call
 
 ### Without ABI
 
-- Get Public Storage Variables for unverified contracts
-- 
+- [ ] Get Public Storage Variables for unverified contracts

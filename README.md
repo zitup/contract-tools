@@ -19,6 +19,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [ ] Retrieve Logs
 - [ ] Get Public Storage Variables for unverified contracts
 - [ ] Static call
+- [x] Operate Unverified Contract(Read/Write)
 
 ### Without ABI
 

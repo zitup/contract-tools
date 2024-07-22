@@ -1,6 +1,7 @@
 'use client';
 import { ModeToggle } from '@/components/ModeToggle';
 import DecodeFunctionData from '@/components/tools/DecodeFunctionData';
+import GetBalance from '@/components/tools/GetBalance';
 import OperateUnverifiedContract from '@/components/tools/OperateUnverifiedContract';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -20,12 +21,16 @@ export default function Home() {
         <TabsList>
           <TabsTrigger value="decodeFunctionData">Decode Function Data</TabsTrigger>
           <TabsTrigger value="operateUnverifiedContract">Operate Unverified Contract</TabsTrigger>
+          <TabsTrigger value="getBalance">Get Balance</TabsTrigger>
         </TabsList>
         <TabsContent value="decodeFunctionData">
           <DecodeFunctionData />
         </TabsContent>
         <TabsContent value="operateUnverifiedContract">
           <OperateUnverifiedContract />
+        </TabsContent>
+        <TabsContent value="getBalance">
+          <GetBalance />
         </TabsContent>
       </Tabs>
       <footer className="text-center py-4">

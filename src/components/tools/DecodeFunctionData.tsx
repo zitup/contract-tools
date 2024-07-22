@@ -70,7 +70,7 @@ const DecodeFunctionData = () => {
                 </p>
                 {args?.map((arg, index) => {
                   return (
-                    <li className="ml-4 mt-1 text-muted-foreground break-all text-base" key={index}>
+                    <li className="ml-4 mt-1 text-muted-foreground break-all whitespace-break-spaces text-base" key={index}>
                       <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
                         {Array.isArray(arg) || typeof arg === 'object'
                           ? JSON5.stringify(arg, function bigIntReplacer(key, value) {

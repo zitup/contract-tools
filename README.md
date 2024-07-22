@@ -29,6 +29,7 @@
 #### Without ABI
 
 - [ ] Get Public Storage Variables for unverified contracts
+- [x] Get balance at any block
 
 ### Getting Started
 

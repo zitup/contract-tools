@@ -5,6 +5,8 @@ import { Card, CardTitle } from '../ui/card';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { decodeFuncData } from '@/scripts/decodeFunctionData';
+import Error from '../Error';
+import { stringify } from '@/lib/utils';
 
 const DecodeFunctionData = () => {
   const [functionData, setFunctionData] = useState('');
@@ -58,7 +60,7 @@ const DecodeFunctionData = () => {
       <Button className="mt-2 self-end" onClick={onClick}>
         Decode
       </Button>
-      <p className="text-sm text-destructive mt-2">{error}</p>
+      <Error message={error} />
       {result && (
         <Card className="p-4 mt-2">
           <CardTitle>Results</CardTitle>
@@ -71,17 +73,7 @@ const DecodeFunctionData = () => {
                 {args?.map((arg, index) => {
                   return (
                     <li className="ml-4 mt-1 text-muted-foreground break-all whitespace-break-spaces text-base" key={index}>
-                      <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
-                        {Array.isArray(arg) || typeof arg === 'object'
-                          ? JSON5.stringify(arg, function bigIntReplacer(key, value) {
-                              if (typeof value === 'bigint') {
-                                return `${value}`;
-                              }
-
-                              return value;
-                            })
-                          : String(arg)}
-                      </code>
+                      <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">{stringify(arg)}</code>
                     </li>
                   );
                 })}

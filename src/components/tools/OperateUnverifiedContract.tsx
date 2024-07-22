@@ -12,6 +12,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useAccount, useWalletClient, useWriteContract } from 'wagmi';
 import { writeContract } from 'wagmi/actions';
 import { Chains, config } from '@/app/providers';
+import Error from '../Error';
 
 const OperateUnverifiedContract = () => {
   const [chain, setChain] = useState<number>(1);
@@ -152,7 +153,7 @@ const OperateUnverifiedContract = () => {
           Write
         </Button>
       </div>
-      <p className="text-sm text-destructive mt-2 break-all whitespace-break-spaces">{error}</p>
+      <Error message={error} />
 
       <Card className="p-4 mt-2">
         <CardTitle>Results</CardTitle>

@@ -7,11 +7,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const stringify = (arg: any) => {
-  return JSON5.stringify(arg, function bigIntReplacer(key, value) {
-    if (typeof value === 'bigint') {
-      return `${value}`;
-    }
+  return Array.isArray(arg) || typeof arg === 'object'
+    ? JSON5.stringify(arg, function bigIntReplacer(key, value) {
+        if (typeof value === 'bigint') {
+          return `${value}`;
+        }
 
-    return value;
-  });
+        return value;
+      })
+    : String(arg);
 };

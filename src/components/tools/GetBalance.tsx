@@ -8,6 +8,7 @@ import { Input } from '../ui/input';
 import { Separator } from '../ui/separator';
 import { SelectScrollable } from '../SelectScrollable';
 import { stringify } from '@/lib/utils';
+import Error from '../Error';
 
 const GetBalance = () => {
   const [chain, setChain] = useState<number>(1);
@@ -95,7 +96,7 @@ const GetBalance = () => {
       <Button className="mt-2 self-end" onClick={onClick}>
         Get Balance
       </Button>
-      <p className="text-sm text-destructive mt-2 break-all whitespace-break-spaces">{error}</p>
+      <Error message={error} />
       {result && (
         <Card className="p-4 mt-2">
           <CardTitle>Results</CardTitle>

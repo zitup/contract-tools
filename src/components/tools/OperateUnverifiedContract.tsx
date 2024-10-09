@@ -13,6 +13,7 @@ import { useAccount, useWalletClient, useWriteContract } from 'wagmi';
 import { writeContract } from 'wagmi/actions';
 import { Chains, config } from '@/app/providers';
 import Error from '../Error';
+import { stringify } from '@/lib/utils';
 
 const OperateUnverifiedContract = () => {
   const [chain, setChain] = useState<number>(1);
@@ -157,7 +158,7 @@ const OperateUnverifiedContract = () => {
 
       <Card className="p-4 mt-2">
         <CardTitle>Results</CardTitle>
-        {result !== null && <div className="mt-2">{String(result)}</div>}
+        {result !== null && <div className="mt-2">{stringify(result)}</div>}
         {writeResult !== null && (
           <a href={writeResult} className="mt-2 underline block w-full overflow-hidden text-ellipsis" target="_blank">
             {String(writeResult)}

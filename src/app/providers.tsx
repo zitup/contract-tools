@@ -46,6 +46,9 @@ export const config = createConfig({
   connectors,
   chains: Chains as unknown as [chains.Chain, ...chains.Chain[]],
   client({ chain }) {
+    if (chain.id === 56) {
+      return createClient({ chain, transport: http('https://binance.llamarpc.com') });
+    }
     return createClient({ chain, transport: http() });
   },
 });
